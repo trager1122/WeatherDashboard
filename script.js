@@ -50,14 +50,21 @@ $(document).ready(function () {
     }).then(function (response){
       console.log(response);
       $(".day").each(function (daysForecasted) {
-        $(".day").css({"width":"40px", "height":"40px", "background-color":"#00BFFF"});
+        iconCode=response.list[daysForecasted+1].weather[0].icon;
+        iconImg= '<img src=http://openweathermap.org/img/wn/'+ iconCode + '.png alt="weather icon"';
+        var forecasttempF=(response.list[daysForecasted+1].main.temp - 273.15) * 1.8 + 32;
+        $(".day").css({"background-color":"#00BFFF", "color": "white"});
         let today = moment();
-        today.add(daysForecasted,'days');
-        let date = moment(day).format("M/D/YYYY");
-        $(this).html(date);
+        today.add(daysForecasted + 1,'days');
+        let date = moment(today).format("M/D/YYYY");
+        $(this).html('<p>'+date+'</p>'+
+                     '<p>'+iconImg+'</p>'+
+                     '<p>Temp: '+forecasttempF.toFixed(2)+'°F</p>'+
+                     '<p>Humidity: '+response.list[daysForecasted+1].main.humidity+'%</p>'
+        );
       })
     })
-  }  
+  } 
 
   function searchCall(queryURL){
     $.ajax({
