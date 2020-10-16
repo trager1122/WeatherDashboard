@@ -43,16 +43,16 @@ $(document).ready(function () {
 
   function forecastCall(citySearched){
     var cityForecasted = citySearched;
-    queryURL="https://api.openweathermap.org/data/2.5/forecast?q="+cityForecasted+"&appid="+APIKey;
+    queryURL="https://api.openweathermap.org/data/2.5/forecast/daily?q="+cityForecasted+"&cnt=5&appid="+APIKey;
     $.ajax({
       url: queryURL,
       method: "GET",
     }).then(function (response){
       console.log(response);
       $(".day").each(function (daysForecasted) {
-        iconCode=response.list[daysForecasted+1].weather[0].icon;
-        iconImg= '<img src=http://openweathermap.org/img/wn/'+ iconCode + '.png alt="weather icon"';
-        var forecasttempF=(response.list[daysForecasted+1].main.temp - 273.15) * 1.8 + 32;
+        iconCode=response.list[daysForecasted].weather[0].icon;
+        iconImg= '<img src=https://openweathermap.org/img/wn/'+ iconCode + '.png alt="weather icon"';
+        var forecasttempF=(response.list[daysForecasted].temp.max - 273.15) * 1.8 + 32;
         $(".day").css({"background-color":"#00BFFF", "color": "white"});
         let today = moment();
         today.add(daysForecasted + 1,'days');
@@ -60,7 +60,7 @@ $(document).ready(function () {
         $(this).html('<p>'+date+'</p>'+
                      '<p>'+iconImg+'</p>'+
                      '<p>Temp: '+forecasttempF.toFixed(2)+'°F</p>'+
-                     '<p>Humidity: '+response.list[daysForecasted+1].main.humidity+'%</p>'
+                     '<p>Humidity: '+response.list[daysForecasted].humidity+'%</p>'
         );
       })
     })
