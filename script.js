@@ -95,12 +95,13 @@ $(document).ready(function () {
       for (var i = 0; i < storedSearches.length; i++) {
         if (storedSearches[i] !==null){
           $(".search-history").prepend('<p><button class="history-button">'+storedSearches[i]+'</button></p>');
+          $(".history-button").css("width", "max")
         }
       }
     }
   }
 
-  $("button.history-button").on("click", function(){
+  $(".history-button").on("click", function(){
     citySearched=$(this).text();
     queryURL =
       "https://api.openweathermap.org/data/2.5/weather?q=" +
