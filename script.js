@@ -6,7 +6,16 @@ $(document).ready(function () {
   var iconImg;
   var citySearched;
 
-  historyRender();
+  function historyReload(){
+    var storedHistory= JSON.parse(localStorage.getItem("searches")) || [];
+    if (storedHistory.length !== null) {
+      for (var i = 0; i < storedHistory.length; i++) {
+          $(".search-history").prepend('<p><button class="history-button">'+storedHistory[i]+'</button></p>');
+      }
+    }  
+  }  
+
+  historyReload();
 
   $(".search-button").on("click", function(event){
       event.preventDefault();
@@ -40,8 +49,9 @@ $(document).ready(function () {
         }else if (uvIndex >=8 && uvIndex <= 10){
           $('.uv-value').css("background-color", "red");
         } else {$('.uv-value').css("background-color", "purple");}
-    });
-  }
+      });
+    }
+  
 
   function forecastCall(){
     queryURL="https://api.openweathermap.org/data/2.5/forecast/daily?q="+citySearched+"&cnt=5&appid="+APIKey;
@@ -49,21 +59,21 @@ $(document).ready(function () {
       url: queryURL,
       method: "GET",
     }).then(function (response){
-      $(".day").each(function (daysForecasted) {
-        iconCode=response.list[daysForecasted].weather[0].icon;
-        iconImg= '<img src=https://openweathermap.org/img/wn/'+ iconCode + '.png alt="weather icon"';
-        var forecasttempF=(response.list[daysForecasted].temp.max - 273.15) * 1.8 + 32;
-        $(".day").css({"background-color":"#00BFFF", "color": "white"});
-        let today = moment();
-        today.add(daysForecasted + 1,'days');
-        let date = moment(today).format("M/D/YYYY");
-        $(this).html('<p>'+date+'</p>'+
-                     '<p>'+iconImg+'</p>'+
-                     '<p>Temp: '+forecasttempF.toFixed(2)+'°F</p>'+
-                     '<p>Humidity: '+response.list[daysForecasted].humidity+'%</p>'
-        );
+        $(".day").each(function (daysForecasted) {
+          iconCode=response.list[daysForecasted].weather[0].icon;
+          iconImg= '<img src=https://openweathermap.org/img/wn/'+ iconCode + '.png alt="weather icon"';
+          var forecasttempF=(response.list[daysForecasted].temp.max - 273.15) * 1.8 + 32;
+          $(".day").css({"background-color":"#00BFFF", "color": "white"});
+          let today = moment();
+          today.add(daysForecasted + 1,'days');
+          let date = moment(today).format("M/D/YYYY");
+          $(this).html('<p>'+date+'</p>'+
+                        '<p>'+iconImg+'</p>'+
+                        '<p>Temp: '+forecasttempF.toFixed(2)+'°F</p>'+
+                        '<p>Humidity: '+response.list[daysForecasted].humidity+'%</p>'
+                      );
+        })
       })
-    })
   } 
 
   function searchCall(){
@@ -95,7 +105,6 @@ $(document).ready(function () {
       for (var i = 0; i < storedSearches.length; i++) {
         if (storedSearches[i] !==null){
           $(".search-history").prepend('<p><button class="history-button">'+storedSearches[i]+'</button></p>');
-          $(".history-button").css("width", "max")
         }
       }
     }
@@ -112,4 +121,3 @@ $(document).ready(function () {
     forecastCall();
     })
 })
-
