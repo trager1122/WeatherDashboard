@@ -12,21 +12,20 @@ $(document).ready(function () {
       for (var i = 0; i < storedHistory.length; i++) {
           $(".search-history").prepend('<p><button class="history-button">'+storedHistory[i]+'</button></p>');
       }
+      citySearched=storedHistory[storedHistory.length-1];
+      queryURL =
+        "https://api.openweathermap.org/data/2.5/weather?q=" +
+        citySearched +
+        "&appid=" +
+        APIKey;
+        searchCall();
+        forecastCall();
     }
-    citySearched=storedHistory[storedHistory.length-1];
-    queryURL =
-      "https://api.openweathermap.org/data/2.5/weather?q=" +
-      citySearched +
-      "&appid=" +
-      APIKey;
-      searchCall();
-      forecastCall(); 
   }  
 
   historyReload();
 
   $(".search-button").on("click", function(event){
-      $(".current-conditions").css("border","solid");
       citySearched=$(".searched-city").val();
       queryURL =
       "https://api.openweathermap.org/data/2.5/weather?q=" +
@@ -57,7 +56,7 @@ $(document).ready(function () {
           $('.uv-value').css("background-color", "red");
         } else {$('.uv-value').css("background-color", "purple");}
       });
-    }
+  }
   
 
   function forecastCall(){
@@ -67,6 +66,7 @@ $(document).ready(function () {
       method: "GET",
     }).then(function (response){
         $(".day").each(function (daysForecasted) {
+          $(".current-conditions").css("border","solid");
           iconCode=response.list[daysForecasted].weather[0].icon;
           iconImg= '<img src=https://openweathermap.org/img/wn/'+ iconCode + '.png alt="weather icon"';
           var forecasttempF=(response.list[daysForecasted].temp.max - 273.15) * 1.8 + 32;
@@ -84,13 +84,15 @@ $(document).ready(function () {
   } 
 
   function searchCall(){
+    var citiesSearched= JSON.parse(localStorage.getItem("searches")) || [];
     $.ajax({
       url: queryURL,
       method: "GET",
       error:function (data){
-      alert("Invalid user input or your choice from search history/last city searched was formatted improperly. Please refer to search directions.");
-      location.reload();
-    }
+        if (citiesSearched.length !== 0){
+          alert("Invalid user input or your choice from search history/last city searched was formatted improperly. Please refer to search directions.");
+        }
+      }
   }).then(function (response) {
       iconCode=response.weather[0].icon;
       iconImg= '<img src=https://openweathermap.org/img/wn/'+ iconCode + '.png alt="weather icon"';
