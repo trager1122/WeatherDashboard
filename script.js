@@ -12,7 +12,15 @@ $(document).ready(function () {
       for (var i = 0; i < storedHistory.length; i++) {
           $(".search-history").prepend('<p><button class="history-button">'+storedHistory[i]+'</button></p>');
       }
-    }  
+    }
+    citySearched=storedHistory[storedHistory.length-1];
+    queryURL =
+      "https://api.openweathermap.org/data/2.5/weather?q=" +
+      citySearched +
+      "&appid=" +
+      APIKey;
+      searchCall();
+      forecastCall(); 
   }  
 
   historyReload();
@@ -82,7 +90,7 @@ $(document).ready(function () {
       method: "GET",
     }).then(function (response) {
       iconCode=response.weather[0].icon;
-      iconImg= '<img src=http://openweathermap.org/img/wn/'+ iconCode + '.png alt="weather icon"';
+      iconImg= '<img src=https://openweathermap.org/img/wn/'+ iconCode + '.png alt="weather icon"';
       $('.city-date-cond').html('<h1>' + response.name +' '+ today + ' '+ iconImg +'</h1>');
       var tempF = (response.main.temp - 273.15) * 1.8 + 32;
       $('.temperature').text('Temperature: ' + tempF.toFixed(1) +'°F');
