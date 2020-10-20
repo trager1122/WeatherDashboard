@@ -26,7 +26,6 @@ $(document).ready(function () {
   historyReload();
 
   $(".search-button").on("click", function(event){
-      event.preventDefault();
       $(".current-conditions").css("border","solid");
       citySearched=$(".searched-city").val();
       queryURL =
@@ -88,7 +87,11 @@ $(document).ready(function () {
     $.ajax({
       url: queryURL,
       method: "GET",
-    }).then(function (response) {
+      error:function (data){
+      alert("Invalid user input or your choice from search history/last city searched was formatted improperly. Please refer to search directions.");
+      location.reload();
+    }
+  }).then(function (response) {
       iconCode=response.weather[0].icon;
       iconImg= '<img src=https://openweathermap.org/img/wn/'+ iconCode + '.png alt="weather icon"';
       $('.city-date-cond').html('<h1>' + response.name +' '+ today + ' '+ iconImg +'</h1>');
