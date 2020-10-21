@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
   <head>
+    <!-- Page Styling -->
     <meta charset="utf-8" />
     <link
       rel="stylesheet"
@@ -8,23 +9,21 @@
       integrity="sha384-JcKb8q3iqJ61gNV9KGb8thSsNjpSL0n8PARn9HuZOnIxN0hoP+VmmDGMN5t9UJ0Z"
       crossorigin="anonymous"
     />
-    <link
-      rel="stylesheet"
-      href="https://use.fontawesome.com/releases/v5.8.1/css/all.css"
-      integrity="sha384-50oBUHEmvpQ+1lW4y57PTFmhCaXp0ML5d60M1M7uH2+nqUivzIebhndOJK28anvf"
-      crossorigin="anonymous"
-    />
+    <!-- Page Layout HTML -->
     <title>Your Weather Dashboard</title>
   </head>
   <body>
+    <!-- Header -->
     <div class="container-12">
       <div class="row d-flex justify-content-center bg-dark text-white">
         <h1>Weather Dashboard</h1>
       </div>
     </div>
+    <!-- Weather Dashboard Layout -->
     <div class="container-12">
       <div class="row">
         <div class="col-3 pl-5 bg-light pr-4">
+          <!-- Search Bar -->
           <div class="row search-bar">
             <form>
               <div class="form-group ml-1">
@@ -42,8 +41,10 @@
               </div>
             </form>
           </div>
+          <!-- Search History -->
           <div class="search-history row d-block"></div>
         </div>
+        <!-- Current Conditions -->
         <div class="col-9">
           <div class="current-conditions row-lg-12 mt-1 pl-1 mr-1 mb-2">
             <h2 class="city-date-cond pl-1"></h2>
@@ -52,6 +53,7 @@
             <p class="wind-speed pl-1"></p>
             <span class="uv-index pl-1 pb-1"></span><span class="uv-value"></span>
           </div>
+          <!-- 5-Day Forecast -->
           <div class="forecast row-lg-12">
               <div class="row ml-1">
                 <div class="day col-2 justify-content-start p-1 mr-4"></div>
@@ -64,7 +66,6 @@
         </div>
       </div>
     </div>
-
     <!-- Javascript -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.24.0/moment.min.js"></script>

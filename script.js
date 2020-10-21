@@ -1,4 +1,5 @@
 $(document).ready(function () {
+  // Global Variables
   const APIKey = "166a433c57516f51dfab1f7edaed8413";
   var queryURL;
   var today=moment().format("(M/D/YYYY)");
@@ -6,6 +7,7 @@ $(document).ready(function () {
   var iconImg;
   var citySearched;
 
+  // Function for Rendering Page with search history and the weather for the most recently searched city
   function historyReload(){
     var storedHistory= JSON.parse(localStorage.getItem("searches")) || [];
     if (storedHistory.length !== null) {
@@ -25,6 +27,7 @@ $(document).ready(function () {
 
   historyReload();
 
+  //Search Event and Function 
   $(".search-button").on("click", function(event){
       citySearched=$(".searched-city").val();
       queryURL =
@@ -37,6 +40,7 @@ $(document).ready(function () {
       historyRender();
   });
 
+  //UV Index Call and Classification/Color-Coding Function 
   function uvRender(cityLat,cityLon){
       queryURL="https://api.openweathermap.org/data/2.5/uvi?lat=" + cityLat+ "&lon=" + cityLon + "&appid=" + APIKey;
       $.ajax({
@@ -58,7 +62,7 @@ $(document).ready(function () {
       });
   }
   
-
+  //5-Day Forecast Call Function
   function forecastCall(){
     queryURL="https://api.openweathermap.org/data/2.5/forecast/daily?q="+citySearched+"&cnt=5&appid="+APIKey;
     $.ajax({
@@ -83,6 +87,7 @@ $(document).ready(function () {
       })
   } 
 
+  //Search and call for current conditions functions based upon user input
   function searchCall(){
     var citiesSearched= JSON.parse(localStorage.getItem("searches")) || [];
     $.ajax({
@@ -107,6 +112,7 @@ $(document).ready(function () {
     })
   }
   
+  //Dynamic Search History Render Function that lists search from most recent to least recent including incorrect user input as a reminder
   function historyRender(){
     $(".search-history").empty();
     var searchHistory=JSON.parse(localStorage.getItem("searches")) || [];
@@ -123,6 +129,7 @@ $(document).ready(function () {
     }
   }
 
+  //Event Function to call for weather of the city whose button was clicked
   $(".history-button").on("click", function(){
     citySearched=$(this).text();
     queryURL =
